@@ -35,6 +35,7 @@ Route::group([ 'middleware'=> 'auth'],function(){
 
         Route::get('/home', "Admin\HomeController@index")->name('homeAdmin');
 
+
         Route::get('/post', 'Admin\PostController@index')->name('list-post');
 
         Route::post('/postData', 'Admin\PostController@postData')->name('data-post');
@@ -112,3 +113,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/create', 'PageController@create')->name('create');
 
 Route::post('/create', 'PageController@createAccount')->name('create-account');
+
+Route::get('/asd', function (){
+    return view('layouts.app');
+});

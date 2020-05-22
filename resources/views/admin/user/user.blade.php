@@ -11,7 +11,7 @@
                             </h3>
                         </div>
                     </div>
-                    @can('add user')
+                    @can('user.create')
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
@@ -51,12 +51,12 @@
                                 @endif
                             </td>
                             <td><img src="{{asset($value->image)}}" class="img-thumbnail" width="70px" ></td>
-                            <td>@can('detroy user','edit user')
+                            <td>@can('user.delete')
                                 <span class="dropdown">
                                     <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true"><i class="la la-ellipsis-h"></i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                       @can('edit user') <a class="dropdown-item "  href="{{route('edit-user', ['id' => $value->id])}}"><i class="la la-edit"></i>Sửa thành viên</a>@endcan
-                                        @can('detroy user')<a class="dropdown-item btn-remove" href="javascript:;"linkurl="{{route('detroy-role', ['id' => $value->id])}}" ><i class="flaticon-delete-2"></i>Xóa</a>@endcan
+                                       @can('user.update') <a class="dropdown-item "  href="{{route('edit-user', ['id' => $value->id])}}"><i class="la la-edit"></i>Sửa thành viên</a>@endcan
+                                       @can('user.delete')<a class="dropdown-item btn-remove" href="javascript:;"linkurl="{{route('detroy-role', ['id' => $value->id])}}" ><i class="flaticon-delete-2"></i>Xóa</a>@endcan
                                     </div>
                                 </span>
                                 @endcan

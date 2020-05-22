@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\models\Permission;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:home admin', ['only' => ['index']]);
+
     }
 
     public function index(){

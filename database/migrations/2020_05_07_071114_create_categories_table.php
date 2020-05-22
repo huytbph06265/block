@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->Increments('id');
             $table->char('name');
             $table->char('description');
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->integer('is_delete')->default(0);
             $table->integer('creator_at');
             $table->integer('updator_at')->nullable();

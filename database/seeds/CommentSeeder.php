@@ -21,7 +21,7 @@ class CommentSeeder extends Seeder
                 'post_id'=> $faker->randomElement($post_id),
                 'content'=> $faker->realText($maxNbChars = 200, $indexSize = 2),
                 'email'=> $faker->freeEmail,
-                'parent' => null,
+                'parent' => 0,
                 'is_delete' => 0,
                 'creator_at' => $faker->randomElement($user_id),
             ];

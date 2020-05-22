@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     {
         $user=[];
         $faker = \Faker\Factory::create();
-        for ($i=0; $i < 30 ; $i++){
+        for ($i=0; $i < 10 ; $i++){
             $item=[
                 'name' => $faker->name,
                 'email' => $faker->freeEmail,

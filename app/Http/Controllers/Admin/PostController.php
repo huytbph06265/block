@@ -10,23 +10,14 @@ use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class PostController extends Controller
 {
     function __construct()
-
     {
-
-        $this->middleware('permission:list post', ['only' => ['index', 'detail']]);
-
-        $this->middleware('permission:add post', ['only' => ['create', 'store']]);
-
-        $this->middleware('permission:edit post', ['only' => ['show', 'update']]);
-
-        $this->middleware('permission:detroy post', ['only' => ['destroy']]);
 
         $this->post = new PostRepository();
 
@@ -35,70 +26,91 @@ class PostController extends Controller
 
     public function index()
     {
-        $this->user = new UserRepository();
-        $this->cate = new CategoryRepository();
-        $data['cateAll'] = $this->cate->getAll();
-        $data['userAll'] = $this->user->getAll();
-        return view('admin.post.list-post', $data);
+        if (Gate::allows('post.view')){
+            $this->cate = new CategoryRepository();
+            $this->user = new UserRepository();
+            $data['cateAll'] = $this->cate->getAll();
+            $data['userAll'] = $this->user->getAll();
+            return view('admin.post.list-post', $data);
+        }
+        else{
+            return redirect()->route('403');
+        }
     }
 
     public function postData(Request $request)
     {
-        $totalRecord = Post::count();
-        $s = $request->search['value'];
+        if (Gate::allows('post.view')){
+            $totalRecord = Post::count();
+            $s = $request->search['value'];
 
-        $object = Post::with(['category', 'user'])
-            ->where('is_delete', 0);
-        if (!empty($s)) {
-            $object = $object->searchPost($s);
+            $object = Post::with(['category', 'user'])
+                ->where('is_delete', 0);
+            if (!empty($s)) {
+                $object = $object->searchPost($s);
+            }
+            $totalFillter = $object->count();
+            $object = $object->orderBy('id', 'desc')->offset($request->start)->limit($request->length)->get()->toArray();
+            $draw = $request->draw;
+            $a = array(
+                "draw" => $draw,
+                "recordsTotal" => $totalRecord,
+                "recordsFiltered" => $totalFillter,
+                "data" => $object
+            );
+            return json_encode($a);
         }
-        $totalFillter = $object->count();
-        $object = $object->orderBy('id', 'desc')->offset($request->start)->limit($request->length)->get()->toArray();
-        $draw = $request->draw;
-        $a = array(
-            "draw" => $draw,
-            "recordsTotal" => $totalRecord,
-            "recordsFiltered" => $totalFillter,
-            "data" => $object
-        );
-        return json_encode($a);
-    }
-
-    public function create()
-    {
-
+        else{
+            return redirect()->route('403');
+        }
     }
 
     public function store(Request $request)
     {
-        $this->post = new PostRepository();
-        $this->post = $this->post->store($request);
-        return response()->json(['success' => 'Data Added successfully.']);
+
+        if (Gate::allows('post.create')){
+            $this->post = $this->post->store($request);
+            return response()->json(['success' => 'Thêm bài viết mới thành công.']);
+        }
+        else{
+            return redirect()->route('403');
+        }
     }
 
     public function show($id)
     {
-        $this->post = new PostRepository();
-        $data = $this->post->show($id);
-        return response()->json(['data'=> $data]);
+        if (Gate::allows('post.update')){
+            $data = $this->post->show($id);
+            return response()->json(['data'=> $data]);
+        }
+        else{
+            return redirect()->route('403');
+        }
     }
-
     public function update(Request $request, $id)
     {
-        $this->post = new PostRepository();
-        $this->post = $this->post->update($request, $id);
-        return response()->json(['success' => 'Data']);
+        if (Gate::allows('post.update')){
+            $this->post->update($request, $id);
+            return response()->json(['success' => 'Sửa bài viết mới thành công']);
+        }
+        else{
+            return redirect()->route('403');
+        }
     }
 
     public function detroy($id)
     {
-        $this->post = new PostRepository();
-        $this->post = $this->post->destroy($id);
+        $post = Post::where('user_id', Auth::user()->id)->first();
+        if (Gate::allows('post.delete', $post)){
+            $this->post->destroy($id);
+        }
+        else{
+            return redirect()->route('403');
+        }
     }
 
     public function detail($id)
     {
-        $this->post = new PostRepository();
         $data['post'] = $this->post->getPostDetail($id);
         return view('admin.post.detail-post', $data);
     }

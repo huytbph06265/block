@@ -49,9 +49,9 @@
                                                 <div class="col-md-4">
                                                     <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
                                                         <input type="checkbox" name="permissions[]" value="{{$key}}"
-                                                               @if($role->hasPermissionTo($value))
-                                                               checked
-                                                               @endif
+                                                               @if(in_array($value, $role->permissions->pluck('code')->toArray()))
+                                                                   checked
+                                                                @endif
                                                                >
                                                         {{$value}}
                                                         <span></span>

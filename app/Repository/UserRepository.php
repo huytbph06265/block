@@ -29,13 +29,7 @@ class UserRepository
             $user->image = request()->image->move('images',$filename);
         }
         $user->save();
-        if (empty($request->roles)  ){
-            $user->assignRole('Thành viên');
-        }
-        else{
-            $r = $request->roles;
-            $user->assignRole($r);
-        }
+        $user->roles()->attach($request->roles);
     }
     public function index(){
         return User::where('is_delete', 0)->get();
@@ -62,23 +56,13 @@ class UserRepository
             $user->image = $user->image;
         }
         $user->save();
-        $b= $request->roles;
-        $p= $user->roles;
+        $b= $request->roles;;
 
-        if (!empty($b) && count($p) != 0) {
-            for ($i=0; $i <count($p) ; $i++) {
-                $h[] = $p[$i]->id;
-            }
-            $k = array_diff($h,$b);
-            foreach ($k as $key => $value) {
-                $user->removeRole($value);
-            }
+        if (empty($b)){
+            $user->roles()->detach($b);
         }
-        elseif (empty($b)) {
-            foreach ($p as $key => $value) {
-                $user->removeRole($value);
-            }
+        else{
+            $user->roles()->attach($b);
         }
-        $user->assignRole($b);
     }
 }

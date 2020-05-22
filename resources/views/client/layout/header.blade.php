@@ -41,10 +41,7 @@
                     <div class="top-meta-data d-flex align-items-center">
                         <!-- Top Search Area -->
                         <div class="top-search-area">
-                            <form action="index.html" method="post">
-                                <input type="search" name="top-search" id="topSearch" placeholder="Search and hit enter...">
-                                <button type="submit" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>
-                            </form>
+
                         </div>
                         <!-- Login -->
                         @if(Auth::user())

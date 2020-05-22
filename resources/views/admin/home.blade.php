@@ -2,7 +2,6 @@
 @section("content")
 @can('home admin')
     <div class="m-grid__item m-grid__item--fluid m-wrapper">
-
         <!-- BEGIN: Subheader -->
         <div class="m-subheader ">
             <div class="d-flex align-items-center">

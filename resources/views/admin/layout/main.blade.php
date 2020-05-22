@@ -25,6 +25,7 @@
     <!-- BEGIN: Header -->
     @include("admin.layout.header")
 
+
     <!-- END: Header -->
 
     <!-- begin::Body -->
@@ -50,9 +51,24 @@
 </div>
 
 <!-- end:: Page -->
+@yield("script")
 
-@include("admin.layout.script")
+<script src="{{asset('admin/assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>
+<script src="{{asset('admin/assets/demo/default/base/scripts.bundle.js')}}" type="text/javascript"></script>
 
+<!--end::Base Scripts -->
+
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<!--begin::Page Vendors Scripts -->
+<script src="{{asset('admin/assets/vendors/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
+
+<!--end::Page Vendors Scripts -->
+
+<!--begin::Page Resources -->
+<script src="{{asset('admin/assets/vendors/custom/boostrap/bootstrap.min.js')}}" type="text/javascript"></script>
+
+
+@include('admin.layout.script')
 <!--end::Page Resources -->
 </body>
 

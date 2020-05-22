@@ -55,8 +55,8 @@
                                             @foreach($roles as $key => $value)
                                                 <div class="col-md-4">
                                                     <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
-                                                        <input type="checkbox" name="roles[]" value="{{$key}}">
-                                                        {{$value}}
+                                                        <input type="checkbox" name="roles[]" value="{{$value->id}}">
+                                                        {{$value->name}}
                                                         <span></span>
                                                     </label>
                                                 </div>

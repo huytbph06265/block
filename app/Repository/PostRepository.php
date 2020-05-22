@@ -55,7 +55,7 @@ class PostRepository
             'user_id' => $request->user_id,
             'publish_date' =>$request->publish_date,
             'summary' => $request->summary,
-            'content' => $request->content,
+            'content' => $request['content'],
             'creator_at'=> $request->user_id,
         ];
         $post->fill($data);
@@ -95,13 +95,13 @@ class PostRepository
 
     }
     public function destroy($id){
-        $post = Post::find($id);
-//        if (empty($post)){
-//            return
-//        }
+        $post = Post::where('id','=', $id)->where('is_delete', 0)->first();
+        if(!empty($post)){
+            $post->is_delete = 1;
+            $post->save();
+        }
+
         $comments = Comment::where('is_delete', 0)->where('post_id', $id)->pluck('id');
-        $post->is_delete = 1;
-        $post->save();
         foreach ($comments as $key => $value){
             $comment = new CommentRepository();
             $comment->detroy($value);

@@ -11,11 +11,8 @@ class CommentController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:list comment', ['only' => ['index','listReply']]);
-        $this->middleware('permission:detroy comment', ['only' => ['detroyReply','detroy']]);
-        $this->middleware('permission:reply-comment', ['only' => ['replyComment']]);
-    }
 
+    }
     public function index(){
        $this->comment = new CommentRepository();
        $data['comments'] = $this->comment->index();

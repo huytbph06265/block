@@ -18,7 +18,6 @@ class CategorySeeder extends Seeder
             $item= [
                 'name'=> $faker->name,
                 'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
-                'image' => 'images/'. $faker->image($dir = 'public/images', $width = 640, $height = 480, 'cats', false),
                 'is_delete' => 0,
                 'creator_at' => $faker->randomElement($user_id),
             ];

@@ -11,7 +11,7 @@
                             </h3>
                         </div>
                     </div>
-                    @can('add category')
+                    @can('cate.create')
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
@@ -51,12 +51,12 @@
                                 <td>{{$value->posts_count}}</td>
                                 <td><img src="{{asset($value->image)}}" class="img-thumbnail" width="70px" ></td>
                                 <td>{{$value->description}}</td>
-                                <td>@can('detroy category', 'edit category')
+                                <td>@can('post.update')
                                     <span class="dropdown">
                                     <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true"><i class="la la-ellipsis-h"></i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        @can('edit category')<a class="dropdown-item"  href="{{route('edit-category', ['id' => $value->id])}}"><i class="la la-edit"></i>Sửa bài viết</a>@endcan
-                                        @can('detroy category')<a class="dropdown-item" href="{{route('detroy-category', ['id' => $value->id])}}"><i class="flaticon-delete-2"></i>Xóa</a>@endcan
+                                        @can('cate.update')<a class="dropdown-item"  href="{{route('edit-category', ['id' => $value->id])}}"><i class="la la-edit"></i>Sửa bài viết</a>@endcan
+                                        @can('cate.delete')<a class="dropdown-item" href="{{route('detroy-category', ['id' => $value->id])}}"><i class="flaticon-delete-2"></i>Xóa</a>@endcan
                                     </div>
                                     </span>
                                     @endcan

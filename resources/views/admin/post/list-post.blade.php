@@ -11,7 +11,7 @@
                             </h3>
                         </div>
                     </div>
-                    @can('add post')
+                    @can('post.create')
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
@@ -120,7 +120,7 @@
                                         <div class="m-portlet m-portlet--tab">
                                             <div class="m-portlet__body">
                                                 <div class="form-group m-form__group">
-                                                    <img name="picture" id="imageTarget" class="img-responsive" src="{{asset('images/default.png')}}" width="100%" required="" aria-required="true">
+                                                    <img name="picture" id="h" class="img-responsive" src="{{asset('images/default.png')}}" width="100%" required="" aria-required="true">
                                                 </div>
                                                 <div class="form-group m-form__group">
                                                     <label for="exampleInputPassword1">Ảnh</label>
@@ -162,4 +162,7 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
+@endsection
+@section("script")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 @endsection

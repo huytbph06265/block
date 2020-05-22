@@ -1,15 +1,3 @@
-<script src="{{asset('admin/assets/vendors/base/vendors.bundle.js')}}" type="text/javascript"></script>
-<script src="{{asset('admin/assets/demo/default/base/scripts.bundle.js')}}" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="{{asset('admin/assets/vendors/custom/boostrap/bootstrap.min.js')}}" type="text/javascript"></script>
-<!--end::Base Scripts -->
-<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
-<!--begin::Page Vendors Scripts -->
-<script src="{{asset('admin/assets/vendors/custom/datatables/datatables.bundle.js')}}" type="text/javascript"></script>
-
-<!--end::Page Vendors Scripts -->
-
-<!--begin::Page Resources -->
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -80,11 +68,10 @@
                 },
                 {
                     targets: 8, render: function (value, type, object, meta) {
-                        return  '<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>' +
-                                '<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>';
+                        return  '@can('post.update')<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>@endcan'+
+                            '@can('post.delete')<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>@endcan';
                     }
                 },
-
             ],
             responsive: false,
             searching: true,
@@ -97,9 +84,9 @@
 
     $("#create_post").click(function () {
         $('#formModal').modal('show');
+        $("#form_post")[0].reset();
         $('#action').val('add');
         $('#action_button').val('add');
-        $("#form_post")[0].reset();
     });
 
     $(document).on('click', '.edit', function () {
@@ -110,6 +97,7 @@
             url:"post/edit/"+id,
             dataType:"json",
             success:function (html) {
+                $("")
                 $("#title").val(html.data.title);
                 $("#cate").val(html.data.category['name']);
                 $("#author").val(html.data.user['name']);
@@ -117,22 +105,17 @@
                 $("#publish_date").val(html.data.publish_date);
                 $("#content").val(html.data.content);
                 $("#hidden_id").val(html.data.id);
-                $("#imageTarget").attr('src',html.data.image);
+                $("#imageTarget").attr("src","/"+html.data.image);
+                $("#h").attr("src","/"+html.data.image);
                 $("#formModal").modal('show');
                 $("#action").val('edit');
                 $("#action_button").val('edit');
             }
         })
     })
+
     $("#form_post").on('submit', function (event) {
         event.preventDefault();
-        var today = new Date();
-        var date = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
-        var publish_date = $("#publish_date").val();
-        console.log(date)
-        if(publish_date == date){
-            console.log(date)
-        }
         if ($('#action').val() == 'add')
         {
             $.ajax({
@@ -182,31 +165,9 @@
             })
         }
     })
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        function getBase64(file, selector) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-                $(selector).attr('src', reader.result);
-            };
-            reader.onerror = function (error) {
-                console.log('Error: ', error);
-            };
-        }
 
-        var img = document.querySelector('#image');
-        img.onchange = function () {
-            var file = this.files[0];
-            if (file == undefined) {
-                $('#imageTarget').attr('src', "{{asset('/admin/dist/img/photo1.png')}}");
-            } else {
-                getBase64(file, '#imageTarget');
-            }
-        }
-    });
 </script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
@@ -225,15 +186,42 @@
                         url:"post/detroy/"+id,
                         success:function (data) {
                             var html='';
-                            html = '<strong>Well done!</strong> You successfully read this important alert message.'
-                                $("#table_post").DataTable().ajax.reload();
-                                $("#msg").html(html);
+                            html = '<strong>Well done!</strong> Xóa thành công.'
+                            $("#table_post").DataTable().ajax.reload();
+                            $("#msg").html(html);
                         }
                     })
                 }
             });
     })
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        function getBase64(file, selector) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                $(selector).attr('src', reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+
+        var img = document.querySelector('#image');
+        img.onchange = function () {
+            var file = this.files[0];
+
+            if (file == undefined) {
+                $('#imageTarget').attr('src', "{{asset('/admin/dist/img/photo1.png')}}");
+            } else {
+                getBase64(file, '#h');
+            }
+        }
+    });
+</script>
+
 <script type="text/javascript">
     $("#form_post").validate({
         rules:{

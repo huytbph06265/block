@@ -11,7 +11,7 @@
                             </h3>
                         </div>
                     </div>
-                    @can('add role')
+                    @can('role.view')
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
@@ -39,17 +39,20 @@
                         @foreach($roles as $key => $value)
                         <tr>
                             <td>{{$key}}</td>
-                            <td>{{$value}}</td>
-                            <td></td>
-                            <td>@can('detroy role','edit role')
-                                <span class="dropdown">
+                            <td>{{$value->name}}</td>
+                            <td>
+                                @foreach($value->permissions as $per)
+                                    {{$per->code}} ||
+                                @endforeach</td>
+                             <td>@can('role.update')
+                                 <span class="dropdown">
                                     <a href="#" class="btn m-btn m-btn--hover-brand m-btn--icon m-btn--icon-only m-btn--pill" data-toggle="dropdown" aria-expanded="true"><i class="la la-ellipsis-h"></i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                        @can('edit role') <a class="dropdown-item "  href="{{route('edit-role', ['id' => $key])}}"><i class="la la-edit"></i>Sửa bài viết</a>@endcan
-                                        @can('detroy role')<a class="dropdown-item btn-remove" href="javascript:;"linkurl="{{route('detroy-role', ['id' => $key])}}" ><i class="flaticon-delete-2"></i>Xóa</a>@endcan
+                                        @can('role.update')<a class="dropdown-item "  href="{{route('edit-role', ['id' => $value->id])}}"><i class="la la-edit"></i>Sửa bài viết</a>@endcan
+                                        @can('role.delete')<a class="dropdown-item btn-remove" href="javascript:;"linkurl="{{route('detroy-role', ['id' => $key])}}" ><i class="flaticon-delete-2"></i>Xóa</a>@endcan
                                     </div>
                                 </span>
-                                @endcan
+                                 @endcan
                             </td>
                         </tr>
                         @endforeach
