@@ -41,22 +41,41 @@ class PostController extends Controller
     public function postData(Request $request)
     {
         if (Gate::allows('post.view')){
+
             $totalRecord = Post::count();
             $s = $request->search['value'];
 
-            $object = Post::with(['category', 'user'])
+            $postData = Post::with(['category', 'user'])
                 ->where('is_delete', 0);
             if (!empty($s)) {
-                $object = $object->searchPost($s);
+                $postData = $postData->searchPost($s);
             }
-            $totalFillter = $object->count();
-            $object = $object->orderBy('id', 'desc')->offset($request->start)->limit($request->length)->get()->toArray();
+            $totalFillter = $postData->count();
+            $postData = $postData->orderBy('id', 'desc')
+                ->offset($request->start)
+                ->limit($request->length)->get();
+            $postData->map(function ($postInfo) {
+                if (in_array('edit_post', Auth::user()->hasPermission())){
+                    $postInfo->update = 1;
+                }
+                else{
+                    $postInfo->update = 0;
+                }
+                if (in_array('delete_post', Auth::user()->hasPermission())){
+                    $postInfo->delete = 1;
+                }
+                else{
+                    $postInfo->delete = 0;
+                }
+                return $postInfo;
+            });
+            $postData = $postData->toArray();
             $draw = $request->draw;
             $a = array(
                 "draw" => $draw,
                 "recordsTotal" => $totalRecord,
                 "recordsFiltered" => $totalFillter,
-                "data" => $object
+                "data" => $postData,
             );
             return json_encode($a);
         }

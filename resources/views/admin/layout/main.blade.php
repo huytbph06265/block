@@ -43,7 +43,6 @@
     </div>
 
     <!-- end:: Body -->
-
     <!-- begin::Footer -->
         @include("admin.layout.footer")
 
@@ -67,8 +66,10 @@
 <!--begin::Page Resources -->
 <script src="{{asset('admin/assets/vendors/custom/boostrap/bootstrap.min.js')}}" type="text/javascript"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-@include('admin.layout.script')
+<script src="{{mix('js/cate.js')}}"></script>
+{{--<script src="{{mix('js/cate.js')}}" defer></script>--}}
 <!--end::Page Resources -->
 </body>
 

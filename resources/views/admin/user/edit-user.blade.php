@@ -42,7 +42,11 @@
                                             @foreach($roles as $key => $value)
                                                 <div class="col-md-4">
                                                     <label class="m-checkbox m-checkbox--solid m-checkbox--brand">
-                                                        <input type="checkbox" name="roles[]" value="{{$value->id}}">
+                                                        <input type="checkbox" name="roles[]" value="{{$value->id}}"
+                                                               @if(in_array($value->name, $user->roles->pluck('name')->toArray()))
+                                                               checked
+                                                            @endif
+                                                        >
                                                         {{$value->name}}
                                                         <span></span>
                                                     </label>

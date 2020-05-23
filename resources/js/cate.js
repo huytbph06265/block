@@ -1,5 +1,4 @@
 
-<script type="text/javascript">
     $(document).ready(function () {
         $("#table_post").DataTable({
             processing: true,
@@ -11,10 +10,7 @@
                 url: "/admin/postData",
                 dataType: "json",
                 type: "POST",
-                data: function (d) {
-                    d._token = "{{ csrf_token() }}";
-                    d.keyword = $('#search').val();
-                }
+                data:  {_token: $('meta[name="csrf-token"]').attr('content')}
             },
             columns: [
                 {data: 'id', 'class': 'text-center'},
@@ -33,6 +29,7 @@
                 },
                 {
                     targets: 1, render: function (value, type, object, meta) {
+                        console.log(object)
                         return object.title
                     }
                 },
@@ -68,12 +65,12 @@
                 },
                 {
                     targets: 8, render: function (value, type, object, meta) {
-                        return  '@can('post.update')<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>@endcan'+
-                        '@can('post.delete')<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>@endcan';
+                        return object.update == 0 ? '' : '<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>'
+                               object.delete == 0 ? '' : '<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>';
                     }
                 },
             ],
-            responsive: false,
+            responsive: true,
             searching: true,
             length: 5,
             // dom: "<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
@@ -166,11 +163,6 @@
     }
 })
 
-</script>
-
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-    <script type="text/javascript">
     $(document).on('click','.delete', function () {
         var id = $(this).attr('id');
         swal({
@@ -194,9 +186,7 @@
                 }
             });
     })
-    </script>
 
-    <script type="text/javascript">
     $(document).ready(function () {
         function getBase64(file, selector) {
             var reader = new FileReader();
@@ -220,9 +210,7 @@
             }
         }
     });
-</script>
 
-<script type="text/javascript">
     $("#form_post").validate({
         rules:{
             title:{
@@ -261,7 +249,7 @@
             },
         }
     })
-    </script>
+
 
 
 

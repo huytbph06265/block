@@ -13,8 +13,7 @@
                 type: "POST",
                 data: function (d) {
                     d._token = "{{ csrf_token() }}";
-                    d.keyword = $('#search').val();
-                }
+                },
             },
             columns: [
                 {data: 'id', 'class': 'text-center'},
@@ -68,8 +67,9 @@
                 },
                 {
                     targets: 8, render: function (value, type, object, meta) {
-                        return  '@can('post.update')<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>@endcan'+
-                            '@can('post.delete')<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>@endcan';
+                        console.log(object)
+                        return  object.update == 0 ? '' : '<button type="button" name="edit" id="'+object.id+'" class="edit btn btn-primary btn-sm">Edit</button>'
+                                object.delete == 0 ? '' : '<button type="button" name="delete" id="'+object.id+'" class="delete btn btn-danger btn-sm">Delete</button>';
                     }
                 },
             ],
@@ -78,7 +78,7 @@
             length: 5,
             // dom: "<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
             lengthMenu: [5, 10, 25, 50],
-            pageLength: 10,
+            pageLength: 5,
         });
     })
 
